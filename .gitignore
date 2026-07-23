@@ -1,0 +1,18 @@
+# Archivos fuente con datos internos del cliente — NO publicar
+*.pbix
+*.msapp
+*.zip
+*.pbit
+manifest.json
+Microsoft.Flow/
+definition.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
