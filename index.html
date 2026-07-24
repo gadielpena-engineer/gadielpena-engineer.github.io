@@ -3,424 +3,829 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gadiel Peña — Power Platform y Business Intelligence</title>
-<meta name="description" content="Automatización de procesos y tableros de control con Power BI, Power Apps y Power Automate.">
+<title>Gadiel Peña — Business Intelligence y Automatización</title>
+<meta name="description" content="Tableros de control, automatización de procesos y sistemas internos con Power BI, Power Apps, Power Automate y SQL.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#12161c;
-  --paper:#faf9f7;
-  --slate:#5b6472;
-  --line:#dfdcd6;
-  --signal:#1b4dd8;
-  --signal-soft:#eaeffc;
-  --amber:#c2691a;
+  --void:#05070d;
+  --deep:#0a0f1c;
+  --panel:#0e1526;
+  --panel-2:#121b30;
+  --line:#1e2b45;
+  --line-lit:#2a3d5f;
+  --text:#e8eef7;
+  --muted:#8b9bb4;
+  --dim:#5d6d86;
+  --blue:#2f7dff;
+  --blue-dim:#1c4fa8;
+  --mint:#22e3a0;
+  --mint-dim:#0f8f63;
+  --glow-b:rgba(47,125,255,.14);
+  --glow-m:rgba(34,227,160,.12);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:'Archivo',system-ui,sans-serif;
-  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  margin:0;background:var(--void);color:var(--text);
+  font-family:'Sora',system-ui,sans-serif;font-size:16.5px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
-.wrap{max-width:1700px;margin:0 auto;padding:0 clamp(24px,5vw,80px)}
-a{color:var(--signal);text-decoration:none}
-a:hover{text-decoration:underline}
-:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1660px;margin:0 auto;padding:0 clamp(20px,4.5vw,72px)}
+a{color:var(--blue);text-decoration:none}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:3px}
+::selection{background:var(--mint);color:var(--void)}
+
+/* ---------- ambient ---------- */
+.aura{position:fixed;inset:0;pointer-events:none;z-index:0}
+.aura::before,.aura::after{content:"";position:absolute;border-radius:50%;filter:blur(120px)}
+.aura::before{width:52vw;height:52vw;left:-14vw;top:-16vw;background:var(--glow-b)}
+.aura::after{width:44vw;height:44vw;right:-12vw;top:32vh;background:var(--glow-m)}
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 20%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 20%,transparent 75%);
+}
+main,header,footer{position:relative;z-index:1}
 
 /* ---------- topbar ---------- */
 .topbar{
-  position:sticky;top:0;z-index:50;
-  background:rgba(250,249,247,.88);backdrop-filter:blur(10px);
+  position:sticky;top:0;z-index:60;
+  background:rgba(5,7,13,.82);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
-.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
-.mark{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.mark b{color:var(--signal)}
-.navlinks{display:flex;gap:26px;font-size:14px}
-.navlinks a{color:var(--slate)}
-.navlinks a:hover{color:var(--ink);text-decoration:none}
-@media(max-width:640px){.navlinks{display:none}}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.mark{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.06em;color:var(--text)}
+.mark i{font-style:normal;color:var(--mint)}
+.navlinks{display:flex;gap:28px;font-size:14px}
+.navlinks a{color:var(--muted);transition:color .18s}
+.navlinks a:hover{color:var(--mint)}
+@media(max-width:760px){.navlinks{display:none}}
 
 /* ---------- hero ---------- */
-.hero{padding:clamp(72px,10vh,120px) 0 clamp(60px,8vh,88px);border-bottom:1px solid var(--line)}
+.hero{padding:clamp(70px,11vh,130px) 0 clamp(52px,7vh,80px)}
 .eyebrow{
-  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--amber);margin:0 0 20px;
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--mint);margin:0 0 24px;
+  display:flex;align-items:center;gap:12px;
 }
-.hero h1.name{
-  font-family:'Fraunces',Georgia,serif;font-weight:600;
-  font-size:clamp(42px,7.5vw,104px);line-height:.98;letter-spacing:-.03em;
-  margin:0 0 28px;
+.eyebrow::after{content:"";height:1px;flex:1;max-width:180px;background:linear-gradient(90deg,var(--mint-dim),transparent)}
+.hero h1{
+  font-weight:700;font-size:clamp(40px,7.2vw,102px);line-height:.96;
+  letter-spacing:-.035em;margin:0 0 30px;
 }
-.hero p.role{
-  font-family:'Fraunces',Georgia,serif;font-weight:500;
-  font-size:clamp(22px,2.6vw,34px);line-height:1.2;letter-spacing:-.015em;
-  margin:0 0 24px;padding-top:26px;border-top:1px solid var(--line);
-  max-width:22ch;
+.hero h1 .l2{
+  background:linear-gradient(96deg,var(--blue) 0%,var(--mint) 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.hero p.role em{font-style:normal;color:var(--signal)}
-.hero p.lede{font-size:19px;line-height:1.62;color:var(--slate);max-width:62ch;margin:0 0 36px}
+.hero .role{
+  font-size:clamp(19px,2.2vw,27px);font-weight:500;line-height:1.35;
+  margin:0 0 22px;padding-top:26px;border-top:1px solid var(--line);max-width:26ch;
+}
+.hero .role em{font-style:normal;color:var(--mint)}
+.hero .lede{color:var(--muted);max-width:60ch;margin:0 0 38px;font-size:17px}
 .cta-row{display:flex;flex-wrap:wrap;gap:14px}
 .btn{
-  display:inline-block;padding:13px 26px;border-radius:3px;
-  font-size:15px;font-weight:500;transition:.16s;
+  display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:4px;
+  font-size:14.5px;font-weight:500;transition:.18s;border:1px solid transparent;cursor:pointer;
 }
-.btn-solid{background:var(--signal);color:#fff}
-.btn-solid:hover{background:#1540b4;text-decoration:none}
-.btn-ghost{border:1px solid var(--line);color:var(--ink)}
-.btn-ghost:hover{border-color:var(--ink);text-decoration:none}
+.btn-a{background:var(--mint);color:var(--void)}
+.btn-a:hover{background:#3df0b1;transform:translateY(-2px)}
+.btn-b{border-color:var(--line-lit);color:var(--text);background:transparent}
+.btn-b:hover{border-color:var(--mint);color:var(--mint)}
 
-/* ---------- capability strip ---------- */
-.strip{border-bottom:1px solid var(--line);padding:34px 0}
-.strip .wrap{display:flex;flex-wrap:wrap;gap:12px 34px;align-items:center}
-.strip span{
-  font-family:'IBM Plex Mono',monospace;font-size:12.5px;
-  letter-spacing:.04em;color:var(--slate);
+/* ---------- stats ---------- */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border-block:1px solid var(--line);margin-top:8px;
 }
-.strip span::before{content:"→ ";color:var(--signal)}
+.stats>div{background:var(--void);padding:26px clamp(16px,2vw,28px)}
+.stats .n{
+  font-family:'JetBrains Mono',monospace;font-size:clamp(26px,3vw,40px);
+  font-weight:500;color:var(--mint);line-height:1;letter-spacing:-.02em;
+}
+.stats .k{font-size:12.5px;color:var(--dim);margin-top:9px;letter-spacing:.02em}
+@media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
 
-/* ---------- section headers ---------- */
-.sec{padding:82px 0;border-bottom:1px solid var(--line)}
-.sec-head{margin-bottom:46px}
+/* ---------- section ---------- */
+.sec{padding:clamp(60px,9vh,104px) 0}
+.sec-head{margin-bottom:44px;max-width:62ch}
 .sec-num{
-  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
-  color:var(--slate);display:block;margin-bottom:12px;
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;
+  color:var(--dim);display:block;margin-bottom:14px;
 }
-.sec h2{
-  font-family:'Fraunces',Georgia,serif;font-weight:600;
-  font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em;margin:0 0 12px;
+.sec h2{font-weight:600;font-size:clamp(27px,3.6vw,42px);letter-spacing:-.025em;margin:0 0 14px;line-height:1.1}
+.sec h2 em{font-style:normal;color:var(--mint)}
+.sec-head p{color:var(--muted);margin:0;font-size:16.5px}
+
+/* ---------- filter bar ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:38px;align-items:center}
+.flabel{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+  color:var(--dim);text-transform:uppercase;margin-right:6px;
 }
-.sec-head p{color:var(--slate);max-width:60ch;margin:0;font-size:17px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.02em;
+  padding:8px 15px;border:1px solid var(--line-lit);border-radius:99px;
+  color:var(--muted);background:transparent;cursor:pointer;transition:.16s;
+}
+.chip:hover{border-color:var(--mint-dim);color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--mint);border-color:var(--mint);color:var(--void);font-weight:500}
+.fcount{font-size:12.5px;color:var(--dim);margin-left:auto;font-family:'JetBrains Mono',monospace}
+
+/* ---------- era band ---------- */
+.era{
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding:16px 0 14px;border-top:1px solid var(--line-lit);margin:14px 0 30px;
+}
+.era h3{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em}
+.era .yr{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--mint)}
+.era .org{font-size:13.5px;color:var(--dim)}
 
 /* ---------- project card ---------- */
 .project{
-  border:1px solid var(--line);border-radius:5px;background:#fff;overflow:hidden;
-  margin-bottom:34px;
+  border:1px solid var(--line);border-radius:8px;background:var(--panel);
+  overflow:hidden;margin-bottom:26px;transition:border-color .25s;
 }
-.pj-top{padding:38px clamp(28px,3.5vw,52px) 0}
+.project:hover{border-color:var(--line-lit)}
+.project.hide{display:none}
+.pj-top{padding:clamp(24px,2.6vw,38px) clamp(22px,2.6vw,42px) 0}
 .pj-meta{
-  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--slate);margin-bottom:14px;
+  display:flex;flex-wrap:wrap;gap:9px;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:15px;
 }
-.pj-meta .client{color:var(--ink);font-weight:500}
-.pj-meta .dot{color:var(--line)}
-.project h3{
-  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:29px;
-  letter-spacing:-.015em;margin:0 0 14px;
+.pj-meta .client{color:var(--blue)}
+.pj-meta .sep{color:var(--line-lit)}
+.badge{
+  padding:3px 9px;border:1px solid var(--mint-dim);border-radius:3px;
+  color:var(--mint);letter-spacing:.06em;
 }
-.pj-sub{color:var(--slate);margin:0 0 26px;max-width:62ch}
+.badge.gray{border-color:var(--line-lit);color:var(--dim)}
+.project h3{font-size:clamp(21px,2.4vw,30px);font-weight:600;letter-spacing:-.02em;margin:0 0 13px;line-height:1.2}
+.pj-sub{color:var(--muted);margin:0 0 28px;max-width:66ch;font-size:16px}
 
-/* problem → solution → result */
-.psr{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
-.psr>div{padding:32px clamp(28px,3.5vw,52px);border-right:1px solid var(--line)}
+/* psr */
+.psr{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.psr>div{padding:26px clamp(22px,2.6vw,42px);border-right:1px solid var(--line)}
 .psr>div:last-child{border-right:none}
 .psr h4{
-  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--amber);margin:0 0 12px;font-weight:500;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;margin:0 0 12px;font-weight:500;
 }
-.psr p{margin:0;font-size:15.5px;line-height:1.62;color:var(--slate)}
-.psr strong{color:var(--ink);font-weight:500}
-@media(max-width:820px){
+.psr .p-a h4{color:var(--dim)}
+.psr .p-b h4{color:var(--blue)}
+.psr .p-c h4{color:var(--mint)}
+.psr p{margin:0;font-size:15px;line-height:1.62;color:var(--muted)}
+.psr strong{color:var(--text);font-weight:500}
+@media(max-width:900px){
   .psr{grid-template-columns:1fr}
   .psr>div{border-right:none;border-bottom:1px solid var(--line)}
   .psr>div:last-child{border-bottom:none}
 }
 
-/* shots */
-.shots{padding:clamp(28px,3.5vw,52px);border-top:1px solid var(--line);background:#fcfbfa}
+/* shots + gallery */
+.shots{padding:clamp(22px,2.6vw,38px) clamp(22px,2.6vw,42px);border-top:1px solid var(--line);background:var(--deep)}
 .shot-label{
-  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--slate);margin:0 0 16px;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);margin:0 0 16px;
 }
-.shot-hero{
-  width:100%;max-width:1488px;border:1px solid var(--line);border-radius:4px;
-  display:block;margin:0 auto;background:#fff;
+.gal{position:relative}
+.gal-stage{
+  border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel-2);
+  display:flex;align-items:center;justify-content:center;
 }
-.shot-grid{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2vw,28px);
-  margin-top:26px;max-width:1180px;
+.gal-stage img{width:100%;display:block;cursor:zoom-in}
+.gal-stage img.tall{max-width:420px;margin:0 auto}
+.gal-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.gnav{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:7px 13px;
+  border:1px solid var(--line-lit);border-radius:4px;background:transparent;
+  color:var(--muted);cursor:pointer;transition:.16s;
 }
-.shot-grid img{
-  width:100%;border:1px solid var(--line);border-radius:4px;display:block;background:#fff;
-}
-@media(max-width:760px){.shot-grid{grid-template-columns:repeat(2,1fr)}}
+.gnav:hover{border-color:var(--mint-dim);color:var(--text)}
+.gnav[aria-pressed="true"]{background:var(--blue-dim);border-color:var(--blue);color:#fff}
+.cap{font-size:13.5px;color:var(--dim);margin:14px 0 0;padding-left:13px;border-left:2px solid var(--line-lit);max-width:74ch}
 
-.note{
-  font-size:13.5px;color:var(--slate);margin:18px 0 0;
-  padding-left:14px;border-left:2px solid var(--line);
-}
-
-/* stack tags */
-.stack{display:flex;flex-wrap:wrap;gap:8px;padding:26px clamp(28px,3.5vw,52px);border-top:1px solid var(--line)}
+/* stack */
+.stack{display:flex;flex-wrap:wrap;gap:7px;padding:22px clamp(22px,2.6vw,42px);border-top:1px solid var(--line)}
 .tag{
-  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;
-  padding:5px 11px;border:1px solid var(--line);border-radius:99px;color:var(--slate);
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;
+  padding:5px 11px;border:1px solid var(--line);border-radius:99px;color:var(--dim);
 }
-.tag.key{border-color:var(--signal);color:var(--signal);background:var(--signal-soft)}
+.tag.k{border-color:var(--blue-dim);color:var(--blue);background:rgba(47,125,255,.07)}
 
-/* ---------- architecture diagram ---------- */
-.arch{padding:clamp(28px,3.5vw,52px);border-top:1px solid var(--line)}
+/* architecture */
+.arch{padding:clamp(22px,2.6vw,38px) clamp(22px,2.6vw,42px);border-top:1px solid var(--line)}
 .arch svg{width:100%;height:auto;display:block}
 
-/* ---------- placeholder / upcoming ---------- */
-.upcoming{
-  border:1px dashed var(--line);border-radius:5px;padding:40px clamp(28px,3.5vw,52px);
-  color:var(--slate);background:#fff;
+/* ---------- other work list ---------- */
+.olist{border-top:1px solid var(--line)}
+.oitem{
+  display:grid;grid-template-columns:112px 1fr;gap:clamp(14px,2.5vw,40px);
+  padding:24px 0;border-bottom:1px solid var(--line);align-items:start;
 }
-.upcoming h3{
-  font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:600;
-  color:var(--ink);margin:0 0 10px;
-}
-.upcoming p{margin:0;font-size:15.5px;max-width:60ch}
+.oitem .yr{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--mint);padding-top:4px}
+.oitem h4{margin:0 0 7px;font-size:17.5px;font-weight:600;letter-spacing:-.01em}
+.oitem p{margin:0;color:var(--muted);font-size:15px;max-width:80ch}
+@media(max-width:640px){.oitem{grid-template-columns:1fr;gap:6px}}
 
 /* ---------- services ---------- */
-.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:5px;overflow:hidden}
-.svc>div{background:#fff;padding:38px clamp(26px,2.6vw,40px)}
-.svc h3{font-family:'Fraunces',Georgia,serif;font-size:20px;font-weight:600;margin:0 0 10px}
-.svc p{margin:0;font-size:15.5px;color:var(--slate);line-height:1.6}
-@media(max-width:820px){.svc{grid-template-columns:1fr}}
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.svc>div{background:var(--panel);padding:34px clamp(22px,2.2vw,34px);transition:background .22s}
+.svc>div:hover{background:var(--panel-2)}
+.svc .ic{
+  width:34px;height:34px;border-radius:6px;display:grid;place-items:center;margin-bottom:16px;
+  background:rgba(34,227,160,.1);border:1px solid var(--mint-dim);
+}
+.svc h3{font-size:18.5px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+.svc p{margin:0;font-size:15px;color:var(--muted);line-height:1.6}
+@media(max-width:900px){.svc{grid-template-columns:1fr}}
 
 /* ---------- contact ---------- */
-.contact{padding:82px 0}
-.contact h2{
-  font-family:'Fraunces',Georgia,serif;font-weight:600;
-  font-size:clamp(28px,4vw,44px);letter-spacing:-.02em;margin:0 0 18px;max-width:20ch;
-}
-.contact p{color:var(--slate);max-width:56ch;margin:0 0 32px;font-size:18px}
-.clist{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:12px 40px}
-.clist li{font-family:'IBM Plex Mono',monospace;font-size:14.5px}
-.clist span{color:var(--slate);margin-right:8px}
+.contact{padding:clamp(64px,9vh,110px) 0;border-top:1px solid var(--line)}
+.contact h2{font-weight:600;font-size:clamp(28px,4.4vw,52px);letter-spacing:-.03em;margin:0 0 18px;max-width:19ch;line-height:1.06}
+.contact h2 em{font-style:normal;color:var(--mint)}
+.contact .lede{color:var(--muted);max-width:58ch;margin:0 0 34px;font-size:17px}
+.clist{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;max-width:940px}
+.clist li{background:var(--panel);padding:22px 24px}
+.clist .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:7px}
+.clist a{font-size:15px;color:var(--text);transition:color .16s;word-break:break-word}
+.clist a:hover{color:var(--mint)}
+@media(max-width:760px){.clist{grid-template-columns:1fr}}
 
-footer{border-top:1px solid var(--line);padding:28px 0;font-size:13px;color:var(--slate)}
+footer{border-top:1px solid var(--line);padding:26px 0;font-size:12.5px;color:var(--dim)}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:200;background:rgba(3,5,10,.94);display:none;place-items:center;padding:24px;backdrop-filter:blur(6px)}
+.lb.on{display:grid}
+.lb img{max-width:96vw;max-height:90vh;border:1px solid var(--line-lit);border-radius:6px}
+.lb-x{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--line-lit);color:var(--text);width:38px;height:38px;border-radius:5px;cursor:pointer;font-size:19px;line-height:1}
+.lb-x:hover{border-color:var(--mint);color:var(--mint)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
+<div class="aura"></div><div class="grid-bg"></div>
 
 <header class="topbar">
   <div class="wrap">
-    <div class="mark">Gadiel Peña <b>/</b> BI &amp; Automatización</div>
+    <div class="mark">gadiel<i>.</i>peña</div>
     <nav class="navlinks">
       <a href="#trabajo">Trabajo</a>
+      <a href="#otros">Otros</a>
       <a href="#servicios">Servicios</a>
       <a href="#contacto">Contacto</a>
     </nav>
   </div>
 </header>
 
+<main>
 <section class="hero">
   <div class="wrap">
-    <p class="eyebrow">Power Platform · Business Intelligence · Monterrey, MX</p>
-    <h1 class="name">Gadiel Abraham<br>Peña Hernández</h1>
+    <p class="eyebrow">Business Intelligence · Power Platform · Monterrey, MX</p>
+    <h1>Gadiel Abraham<br><span class="l2">Peña Hernández</span></h1>
     <p class="role">Proceso manual entra. <em>Tablero vivo</em> sale.</p>
     <p class="lede">
-      Construyo sistemas que conectan la captura de datos con la decisión: una app donde
-      tu equipo registra, un flujo que actualiza solo, y un tablero que todos ven igual.
-      Sin hojas de cálculo circulando por correo.
+      Cuatro años convirtiendo hojas de cálculo dispersas en sistemas que se actualizan solos.
+      Tableros que un director abre cada mañana, apps donde el equipo captura desde el campo,
+      y flujos que conectan ambos sin que nadie mueva un archivo.
     </p>
     <div class="cta-row">
-      <a class="btn btn-solid" href="#trabajo">Ver proyectos</a>
-      <a class="btn btn-ghost" href="#contacto">Hablemos de tu proceso</a>
+      <a class="btn btn-a" href="#trabajo">Ver proyectos</a>
+      <a class="btn btn-b" href="#contacto">Hablemos de tu proceso</a>
     </div>
   </div>
 </section>
 
-<div class="strip">
-  <div class="wrap">
-    <span>Power BI</span>
-    <span>Power Apps</span>
-    <span>Power Automate</span>
-    <span>SharePoint</span>
-    <span>DAX &amp; modelado</span>
-    <span>Análisis de datos</span>
+<div class="wrap">
+  <div class="stats rv">
+    <div><div class="n">14</div><div class="k">Proyectos entregados</div></div>
+    <div><div class="n">4</div><div class="k">Años trabajando con datos</div></div>
+    <div><div class="n">2</div><div class="k">Sectores: industria y gobierno</div></div>
+    <div><div class="n">200K+</div><div class="k">Registros en un solo tablero</div></div>
   </div>
 </div>
 
 <!-- ============ TRABAJO ============ -->
 <section class="sec" id="trabajo">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head rv">
       <span class="sec-num">01 — Trabajo</span>
-      <h2>Proyectos entregados</h2>
+      <h2>Proyectos en <em>producción</em></h2>
       <p>
-        Casos reales en producción. Las cifras y nombres de proyecto aparecen difuminados
-        por acuerdo de confidencialidad con el cliente; la arquitectura y el funcionamiento
-        se muestran completos.
+        Sistemas y tableros con usuarios reales. Las cifras de proyectos privados aparecen
+        difuminadas por confidencialidad; la arquitectura y el funcionamiento se muestran completos.
       </p>
     </div>
 
-    <!-- ---------- PROYECTO: CONTRATOS ---------- -->
-    <article class="project">
+    <div class="filters rv">
+      <span class="flabel">Filtrar</span>
+      <button class="chip" data-f="all" aria-pressed="true">Todos</button>
+      <button class="chip" data-f="powerbi" aria-pressed="false">Power BI</button>
+      <button class="chip" data-f="powerapps" aria-pressed="false">Power Apps</button>
+      <button class="chip" data-f="automate" aria-pressed="false">Power Automate</button>
+      <button class="chip" data-f="sharepoint" aria-pressed="false">SharePoint</button>
+      <button class="chip" data-f="datos" aria-pressed="false">SQL / Bases</button>
+      <span class="fcount" id="fcount"></span>
+    </div>
+
+    <!-- ===== ERA: GOBIERNO ===== -->
+    <div class="era rv">
+      <h3>Jefe de Monitoreo</h3>
+      <span class="yr">2025 — 2026</span>
+      <span class="org">Gobierno Municipal de Guadalupe, N.L.</span>
+    </div>
+
+    <!-- SIAC -->
+    <article class="project rv" data-tags="powerbi datos">
       <div class="pj-top">
         <div class="pj-meta">
-          <span class="client">CEMEX</span>
-          <span class="dot">·</span>
-          <span>Infraestructura y Gobierno</span>
-          <span class="dot">·</span>
-          <span>2024</span>
+          <span class="client">Gobierno de Guadalupe</span><span class="sep">/</span>
+          <span>Innovación y Gobierno Digital</span><span class="sep">/</span><span>2026</span>
+          <span class="badge">En producción</span>
         </div>
-        <h3>Sistema de seguimiento de contratos</h3>
+        <h3>Reportes SIAC — estadística de atención ciudadana</h3>
         <p class="pj-sub">
-          Ciclo cerrado de captura, actualización y visualización para la cartera de obra
-          pública del área: el equipo registra desde el celular y el tablero se actualiza solo.
+          Seguimiento de los reportes ciudadanos del municipio: volumen, resolución, canal de
+          entrada, categoría y distribución geográfica en un solo lugar.
         </p>
       </div>
-
       <div class="psr">
-        <div>
-          <h4>El problema</h4>
-          <p>
-            El avance de cada contrato vivía en hojas de cálculo que se actualizaban a mano y
-            se compartían por correo. <strong>Nadie sabía cuál era la versión buena</strong>, y
-            armar el reporte de avance era un trabajo manual que se repetía cada periodo.
-          </p>
-        </div>
-        <div>
-          <h4>Lo que construí</h4>
-          <p>
-            Una <strong>app móvil</strong> con alta, edición, baja y consulta de proyectos sobre
-            SharePoint. Un <strong>flujo automático</strong> que detecta cada cambio, refresca el
-            modelo de Power BI y notifica al equipo. Y un <strong>tablero</strong> con KPIs y
-            diagrama de Gantt.
-          </p>
-        </div>
-        <div>
-          <h4>El resultado</h4>
-          <p>
-            Una sola fuente de verdad. El cambio capturado en campo llega al tablero
-            <strong>en menos de cinco minutos</strong>, sin que nadie toque un archivo.
-            El reporte de avance dejó de armarse: ya existe.
-          </p>
-        </div>
+        <div class="p-a"><h4>El problema</h4><p>
+          Los reportes vivían en el sistema SIAC y solo se extraía la base cruda a Excel.
+          <strong>No existía ninguna vista analítica</strong>: para saber cuántos reportes de
+          bacheo se resolvieron en el trimestre había que armar el cálculo a mano cada vez.
+        </p></div>
+        <div class="p-b"><h4>Lo que construí</h4><p>
+          Un tablero conectado a <strong>SQL Server</strong> con indicadores de recepción y
+          resolución, tendencia mensual, desglose por categoría y dependencia responsable,
+          canales de captación y <strong>mapa de calor georreferenciado</strong> por colonia.
+        </p></div>
+        <div class="p-c"><h4>El resultado</h4><p>
+          Más de <strong>200 mil reportes</strong> analizables al instante. Lo usa el Secretario
+          de Innovación y Gobierno Digital, otras áreas del municipio y el área de transparencia
+          para sus reportes de rendición de cuentas.
+        </p></div>
       </div>
+      <div class="shots">
+        <p class="shot-label">Tablero</p>
+        <div class="gal" data-gal>
+          <div class="gal-stage"><img src="assets/siac-1.png" alt="Vista superior del tablero SIAC: cinco indicadores de reportes recibidos, tasa de resolución, abiertos, cerrados y en curso; tendencia mensual de recibidos contra resueltos; y dona de reportes por categoría."></div>
+          <div class="gal-nav">
+            <button class="gnav" aria-pressed="true" data-src="assets/siac-1.png" data-alt="Vista superior del tablero SIAC con indicadores, tendencia mensual y dona por categoría.">Indicadores y tendencia</button>
+            <button class="gnav" aria-pressed="false" data-src="assets/siac-2.png" data-alt="Vista inferior del tablero SIAC: top diez de colonias con más reportes, mapa de calor del municipio, canales de captación, estatus de folios y reportes por dependencia responsable.">Mapa y desglose</button>
+          </div>
+        </div>
+        <p class="cap">
+          Una sola página con desplazamiento vertical. El mapa de calor concentra los reportes por
+          zona; los canales de captación distinguen entre atención presencial, chat, call center,
+          brigadas y redes.
+        </p>
+      </div>
+      <div class="stack">
+        <span class="tag k">Power BI</span><span class="tag k">SQL Server</span>
+        <span class="tag">Mapas</span><span class="tag">DAX</span><span class="tag">Sector público</span>
+      </div>
+    </article>
 
+    <!-- ACV -->
+    <article class="project rv" data-tags="powerbi">
+      <div class="pj-top">
+        <div class="pj-meta">
+          <span class="client">Gobierno de Guadalupe</span><span class="sep">/</span>
+          <span>Todas las dependencias</span><span class="sep">/</span><span>2026</span>
+          <span class="badge">Presentado al Alcalde</span>
+        </div>
+        <h3>Alcalde Cómo Vamos — monitoreo de indicadores municipales</h3>
+        <p class="pj-sub">
+          Seguimiento del desempeño del municipio frente a los indicadores que evalúa la
+          plataforma ciudadana Alcalde Cómo Vamos, con avance contra meta y puntaje estimado.
+        </p>
+      </div>
+      <div class="psr">
+        <div class="p-a"><h4>El problema</h4><p>
+          Los indicadores se reportaban por separado en cada dependencia y
+          <strong>nadie tenía la vista completa</strong> antes de la evaluación externa.
+          El resultado se conocía cuando ya no había margen para corregir.
+        </p></div>
+        <div class="p-b"><h4>Lo que construí</h4><p>
+          Un tablero navegable por evaluación y por dependencia, con
+          <strong>semáforo por indicador</strong> según cumplimiento de meta y el cálculo del
+          puntaje obtenido contra el máximo posible.
+        </p></div>
+        <div class="p-c"><h4>El resultado</h4><p>
+          El municipio <strong>anticipa su calificación</strong> en lugar de recibirla. Se
+          identifica qué indicadores están en rojo y con qué dependencia hay que trabajar,
+          con tiempo para actuar. Se presenta directamente al Alcalde.
+        </p></div>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Tablero</p>
+        <div class="gal" data-gal>
+          <div class="gal-stage"><img src="assets/acv-menu.png" alt="Cabecera del tablero Alcalde Cómo Vamos con navegación por evaluación y botones por dependencia municipal, más un selector de indicadores."></div>
+          <div class="gal-nav">
+            <button class="gnav" aria-pressed="true" data-src="assets/acv-menu.png" data-alt="Cabecera del tablero con navegación por evaluación y por dependencia.">Navegación</button>
+            <button class="gnav" aria-pressed="false" data-src="assets/acv-indicadores.png" data-alt="Tabla de indicadores con meta, avance y puntaje, con semáforo verde y rojo según cumplimiento.">Indicadores</button>
+          </div>
+        </div>
+        <p class="cap">
+          Los nombres de los indicadores son información pública; metas, avances y puntajes
+          aparecen difuminados.
+        </p>
+      </div>
+      <div class="stack">
+        <span class="tag k">Power BI</span><span class="tag">DAX</span>
+        <span class="tag">Navegación por marcadores</span><span class="tag">Sector público</span>
+      </div>
+    </article>
+
+    <!-- ===== ERA: ANALISTA ===== -->
+    <div class="era rv">
+      <h3>Analista de Soporte Operativo</h3>
+      <span class="yr">2023 — 2025</span>
+      <span class="org">CEMEX · VP Infraestructura y Gobierno</span>
+    </div>
+
+    <!-- CONTRATOS -->
+    <article class="project rv" data-tags="powerbi powerapps automate sharepoint">
+      <div class="pj-top">
+        <div class="pj-meta">
+          <span class="client">CEMEX</span><span class="sep">/</span>
+          <span>Infraestructura y Gobierno</span><span class="sep">/</span><span>2024</span>
+          <span class="badge">Sistema completo</span>
+        </div>
+        <h3>Contratos — captura móvil, flujo automático y tablero</h3>
+        <p class="pj-sub">
+          Ciclo cerrado para la cartera de obra pública del área: el equipo registra desde el
+          celular y el tablero se actualiza solo, sin que nadie toque un archivo.
+        </p>
+      </div>
+      <div class="psr">
+        <div class="p-a"><h4>El problema</h4><p>
+          El avance de cada contrato vivía en hojas de cálculo actualizadas a mano y compartidas
+          por correo. <strong>Nadie sabía cuál era la versión buena</strong>, y armar el reporte
+          de avance era trabajo manual que se repetía cada periodo.
+        </p></div>
+        <div class="p-b"><h4>Lo que construí</h4><p>
+          Una <strong>app móvil</strong> con alta, edición, baja y consulta sobre SharePoint.
+          Un <strong>flujo</strong> que detecta cada cambio, refresca el modelo de Power BI y
+          notifica al equipo. Y un <strong>tablero</strong> con indicadores y diagrama de Gantt.
+        </p></div>
+        <div class="p-c"><h4>El resultado</h4><p>
+          Una sola fuente de verdad. El cambio capturado en campo llega al tablero en
+          <strong>menos de cinco minutos</strong>. El reporte de avance dejó de armarse: ya existe.
+        </p></div>
+      </div>
       <div class="arch">
         <p class="shot-label">Arquitectura</p>
-        <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img"
+        <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Diagrama: la app móvil escribe en SharePoint; Power Automate detecta el cambio cada cinco minutos, refresca el modelo de Power BI y envía correo al equipo.">
-          <defs>
-            <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-              <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b6472"/>
-            </marker>
-          </defs>
-          <g font-family="Archivo, sans-serif" font-size="13">
-            <!-- App -->
-            <rect x="8" y="58" width="150" height="70" rx="4" fill="#eaeffc" stroke="#1b4dd8"/>
-            <text x="83" y="88" text-anchor="middle" font-size="14" font-weight="600" fill="#12161c">Power App</text>
-            <text x="83" y="107" text-anchor="middle" font-size="11.5" fill="#5b6472">Captura móvil</text>
-
-            <line x1="160" y1="93" x2="222" y2="93" stroke="#5b6472" marker-end="url(#ar)"/>
-
-            <!-- SharePoint -->
-            <rect x="226" y="58" width="150" height="70" rx="4" fill="#fff" stroke="#dfdcd6"/>
-            <text x="301" y="88" text-anchor="middle" font-size="14" font-weight="600" fill="#12161c">SharePoint</text>
-            <text x="301" y="107" text-anchor="middle" font-size="11.5" fill="#5b6472">Lista de contratos</text>
-
-            <line x1="378" y1="93" x2="440" y2="93" stroke="#5b6472" marker-end="url(#ar)"/>
-
-            <!-- Automate -->
-            <rect x="444" y="42" width="160" height="102" rx="4" fill="#fff" stroke="#dfdcd6"/>
-            <text x="524" y="74" text-anchor="middle" font-size="14" font-weight="600" fill="#12161c">Power Automate</text>
-            <text x="524" y="94" text-anchor="middle" font-size="11.5" fill="#5b6472">Detecta cambios</text>
-            <text x="524" y="112" text-anchor="middle" font-family="IBM Plex Mono, monospace"
-                  font-size="11" fill="#c2691a">cada 5 min</text>
-
-            <line x1="606" y1="70" x2="668" y2="70" stroke="#5b6472" marker-end="url(#ar)"/>
-            <line x1="606" y1="118" x2="668" y2="118" stroke="#5b6472" marker-end="url(#ar)"/>
-
-            <!-- Power BI -->
-            <rect x="672" y="38" width="150" height="64" rx="4" fill="#eaeffc" stroke="#1b4dd8"/>
-            <text x="747" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="#12161c">Power BI</text>
-            <text x="747" y="82" text-anchor="middle" font-size="11.5" fill="#5b6472">Refresca modelo</text>
-
-            <!-- Correo -->
-            <rect x="672" y="112" width="150" height="52" rx="4" fill="#fff" stroke="#dfdcd6"/>
-            <text x="747" y="134" text-anchor="middle" font-size="14" font-weight="600" fill="#12161c">Correo</text>
-            <text x="747" y="151" text-anchor="middle" font-size="11.5" fill="#5b6472">Aviso al equipo</text>
+          <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#5d6d86"/></marker></defs>
+          <g font-family="Sora, sans-serif">
+            <rect x="6" y="54" width="152" height="68" rx="5" fill="rgba(47,125,255,.1)" stroke="#2f7dff"/>
+            <text x="82" y="83" text-anchor="middle" font-size="14" font-weight="600" fill="#e8eef7">Power App</text>
+            <text x="82" y="101" text-anchor="middle" font-size="11.5" fill="#8b9bb4">Captura móvil</text>
+            <line x1="160" y1="88" x2="220" y2="88" stroke="#5d6d86" marker-end="url(#ar)"/>
+            <rect x="224" y="54" width="152" height="68" rx="5" fill="#121b30" stroke="#2a3d5f"/>
+            <text x="300" y="83" text-anchor="middle" font-size="14" font-weight="600" fill="#e8eef7">SharePoint</text>
+            <text x="300" y="101" text-anchor="middle" font-size="11.5" fill="#8b9bb4">Lista de contratos</text>
+            <line x1="378" y1="88" x2="438" y2="88" stroke="#5d6d86" marker-end="url(#ar)"/>
+            <rect x="442" y="38" width="162" height="100" rx="5" fill="#121b30" stroke="#2a3d5f"/>
+            <text x="523" y="70" text-anchor="middle" font-size="14" font-weight="600" fill="#e8eef7">Power Automate</text>
+            <text x="523" y="89" text-anchor="middle" font-size="11.5" fill="#8b9bb4">Detecta cambios</text>
+            <text x="523" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#22e3a0">cada 5 min</text>
+            <line x1="606" y1="66" x2="666" y2="66" stroke="#5d6d86" marker-end="url(#ar)"/>
+            <line x1="606" y1="114" x2="666" y2="114" stroke="#5d6d86" marker-end="url(#ar)"/>
+            <rect x="670" y="36" width="152" height="60" rx="5" fill="rgba(34,227,160,.1)" stroke="#22e3a0"/>
+            <text x="746" y="61" text-anchor="middle" font-size="14" font-weight="600" fill="#e8eef7">Power BI</text>
+            <text x="746" y="79" text-anchor="middle" font-size="11.5" fill="#8b9bb4">Refresca modelo</text>
+            <rect x="670" y="106" width="152" height="52" rx="5" fill="#121b30" stroke="#2a3d5f"/>
+            <text x="746" y="128" text-anchor="middle" font-size="14" font-weight="600" fill="#e8eef7">Correo</text>
+            <text x="746" y="145" text-anchor="middle" font-size="11.5" fill="#8b9bb4">Aviso al equipo</text>
           </g>
         </svg>
       </div>
-
       <div class="shots">
-        <p class="shot-label">Tablero de control</p>
-        <img class="shot-hero" src="assets/tablero-contratos.png"
-             alt="Tablero de Power BI con cuatro indicadores en la parte superior, cuatro filtros y un diagrama de Gantt que muestra la línea de tiempo de cada contrato con su porcentaje de avance.">
-        <p class="note">
-          Cuatro indicadores de cartera, filtros por negocio, proyecto, cumplimiento y año,
-          y un Gantt que muestra la línea de tiempo real contra el avance de cada contrato.
-        </p>
-
-        <p class="shot-label" style="margin-top:38px">Aplicación móvil</p>
-        <div class="shot-grid">
-          <img src="assets/app-inicio.png" alt="Pantalla de inicio de la app con cuatro botones: actualizar, agregar, eliminar y visualizar proyectos.">
-          <img src="assets/app-agregar.png" alt="Formulario para añadir un proyecto nuevo con campos de negocio, proyecto, fechas de inicio y término, importe e ingreso acumulado.">
-          <img src="assets/app-actualizar.png" alt="Pantalla para actualizar información, con selectores de negocio y proyecto y campos editables.">
-          <img src="assets/app-eliminar.png" alt="Pantalla para eliminar un proyecto, con confirmación de datos antes de borrar.">
+        <p class="shot-label">Tablero y aplicación</p>
+        <div class="gal" data-gal>
+          <div class="gal-stage"><img src="assets/tablero-contratos.png" alt="Tablero de contratos con cuatro indicadores, cuatro filtros y diagrama de Gantt que muestra la línea de tiempo y el avance de cada contrato."></div>
+          <div class="gal-nav">
+            <button class="gnav" aria-pressed="true" data-src="assets/tablero-contratos.png" data-alt="Tablero con indicadores, filtros y diagrama de Gantt de contratos.">Tablero · Gantt</button>
+            <button class="gnav" aria-pressed="false" data-tall="1" data-src="assets/app-inicio.png" data-alt="Pantalla de inicio de la app con botones para actualizar, agregar, eliminar y visualizar proyectos.">App · Inicio</button>
+            <button class="gnav" aria-pressed="false" data-tall="1" data-src="assets/app-agregar.png" data-alt="Formulario para añadir un proyecto con negocio, fechas, importe de contrato e ingreso acumulado.">App · Alta</button>
+            <button class="gnav" aria-pressed="false" data-tall="1" data-src="assets/app-actualizar.png" data-alt="Pantalla de actualización con selectores de negocio y proyecto y campos editables.">App · Edición</button>
+            <button class="gnav" aria-pressed="false" data-tall="1" data-src="assets/app-eliminar.png" data-alt="Pantalla de baja con confirmación de los datos del proyecto antes de eliminar.">App · Baja</button>
+          </div>
         </div>
-        <p class="note">
+        <p class="cap">
           Nueve pantallas con confirmación antes de cada operación que modifica datos.
           Diseñada para usarse desde el teléfono, en campo.
         </p>
       </div>
-
       <div class="stack">
-        <span class="tag key">Power BI</span>
-        <span class="tag key">Power Apps</span>
-        <span class="tag key">Power Automate</span>
-        <span class="tag">SharePoint Online</span>
-        <span class="tag">Office 365</span>
-        <span class="tag">Gantt</span>
-        <span class="tag">DAX</span>
+        <span class="tag k">Power BI</span><span class="tag k">Power Apps</span>
+        <span class="tag k">Power Automate</span><span class="tag k">SharePoint</span>
+        <span class="tag">Gantt</span><span class="tag">DAX</span>
       </div>
     </article>
 
-    <!-- ---------- SIGUIENTES PROYECTOS ---------- -->
-    <div class="upcoming">
-      <h3>Más casos en preparación</h3>
-      <p>
-        Tableros de análisis y reportería para distintas áreas de negocio. En documentación —
-        se publican aquí conforme se liberan las capturas.
-      </p>
+    <!-- ESTIMACIONES -->
+    <article class="project rv" data-tags="powerbi powerapps sharepoint">
+      <div class="pj-top">
+        <div class="pj-meta">
+          <span class="client">CEMEX</span><span class="sep">/</span>
+          <span>Dirección de la VP</span><span class="sep">/</span><span>2025</span>
+          <span class="badge">Sistema completo</span>
+        </div>
+        <h3>Estimaciones — avance nacional en una sola vista</h3>
+        <p class="pj-sub">
+          Consolidación del avance de estimaciones de los proyectos de construcción del país,
+          para consulta directa de la Vicepresidencia.
+        </p>
+      </div>
+      <div class="psr">
+        <div class="p-a"><h4>El problema</h4><p>
+          Cada uno de los <strong>18 a 20 proyectos</strong> tenía su propio archivo de Excel con
+          su avance. Para saber cómo iba la cartera completa había que abrirlos uno por uno.
+          El VP quería una sola herramienta.
+        </p></div>
+        <div class="p-b"><h4>Lo que construí</h4><p>
+          Una <strong>app de registro</strong> sobre SharePoint donde se captura el ciclo de cada
+          estimación, y un tablero con actualización automática desde
+          <strong>Power BI Service</strong>.
+        </p></div>
+        <div class="p-c"><h4>El resultado</h4><p>
+          Veinte archivos se volvieron <strong>una vista</strong>. Estatus de proyecto, avance
+          ejecutado contra contratado y contra facturado, con semáforo por proyecto y consulta
+          en tiempo real.
+        </p></div>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Tablero y aplicación</p>
+        <div class="gal" data-gal>
+          <div class="gal-stage"><img src="assets/tablero-estimaciones.png" alt="Tablero de estimaciones con indicadores de proyectos activos y cerrados, estimaciones facturadas y por facturar, y tabla de avance por proyecto con semáforo de estatus."></div>
+          <div class="gal-nav">
+            <button class="gnav" aria-pressed="true" data-src="assets/tablero-estimaciones.png" data-alt="Tablero de estimaciones con indicadores y tabla de avance por proyecto.">Tablero</button>
+            <button class="gnav" aria-pressed="false" data-tall="1" data-src="assets/app-estimaciones.png" data-alt="Pantalla de registro de la app de estimaciones con campos de estatus, ciclo, fechas, importes y comentarios.">App · Registro</button>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <span class="tag k">Power BI</span><span class="tag k">Power Apps</span>
+        <span class="tag k">SharePoint</span><span class="tag">Power BI Service</span>
+      </div>
+    </article>
+
+    <!-- PORTAL SHAREPOINT -->
+    <article class="project rv" data-tags="sharepoint powerbi">
+      <div class="pj-top">
+        <div class="pj-meta">
+          <span class="client">CEMEX</span><span class="sep">/</span>
+          <span>VP Infraestructura y Gobierno</span><span class="sep">/</span><span>2024 — 2025</span>
+        </div>
+        <h3>Portal interno de reportería</h3>
+        <p class="pj-sub">
+          Sitio en SharePoint que centraliza la reportería del equipo de costos: menú de
+          navegación, subpáginas por tema y tableros de Power BI embebidos para consultarse sin
+          salir del sitio. <strong>Un solo destino para toda la VP</strong>, en lugar de archivos
+          circulando por correo.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Subpágina con tablero embebido</p>
+        <div class="gal-stage"><img src="assets/sharepoint-portal.png" alt="Sitio de SharePoint de la VP Infraestructura y Gobierno mostrando una subpágina con el tablero de estimaciones embebido."></div>
+      </div>
+      <div class="stack"><span class="tag k">SharePoint</span><span class="tag k">Power BI</span><span class="tag">Publicación web</span></div>
+    </article>
+
+    <!-- COSTOS EN LINEA -->
+    <article class="project rv" data-tags="powerbi">
+      <div class="pj-top">
+        <div class="pj-meta"><span class="client">CEMEX</span><span class="sep">/</span><span>Equipo de costos</span><span class="sep">/</span><span>2025</span></div>
+        <h3>Costos en Línea</h3>
+        <p class="pj-sub">
+          Cuatro vistas del costo de las áreas que integran la VP —Construcción, Construcción
+          Modular y Pavimentos— sobre información originada en <strong>SAP</strong>. Sustituyó
+          tablas pivote de Excel y, al publicarse en la nube, dejó de ser un archivo local para
+          volverse una referencia compartida entre áreas.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Páginas del tablero</p>
+        <div class="gal" data-gal>
+          <div class="gal-stage"><img src="assets/costos-resumen-fop.png" alt="Página de resumen FOP con tres tablas paralelas por línea de negocio mostrando ingreso, variable, fijo y FOP por proyecto."></div>
+          <div class="gal-nav">
+            <button class="gnav" aria-pressed="true" data-src="assets/costos-resumen-fop.png" data-alt="Resumen FOP con tres tablas por línea de negocio.">Resumen FOP</button>
+            <button class="gnav" aria-pressed="false" data-src="assets/costos-incurridos.png" data-alt="Desglose de costos incurridos por clasificación y mes.">Incurridos</button>
+            <button class="gnav" aria-pressed="false" data-src="assets/costos-mp.png" data-alt="Materia prima por proyecto con variable, volumen y unitario.">Materia prima</button>
+          </div>
+        </div>
+      </div>
+      <div class="stack"><span class="tag k">Power BI</span><span class="tag">SAP</span><span class="tag">Modelado</span><span class="tag">DAX</span></div>
+    </article>
+
+    <!-- FOP/EBIT -->
+    <article class="project rv" data-tags="powerbi">
+      <div class="pj-top">
+        <div class="pj-meta"><span class="client">CEMEX</span><span class="sep">/</span><span>VP Infraestructura y Gobierno</span><span class="sep">/</span><span>2025</span></div>
+        <h3>FOP vs EBIT</h3>
+        <p class="pj-sub">
+          Comparativo mensual y tendencia anual del FOP contra el EBIT de la Vicepresidencia,
+          desglosado por línea de negocio. Antes se armaba con
+          <strong>gráficas hechas a mano en Excel</strong>; ahora es una vista que se actualiza
+          con la información de SAP.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Tablero</p>
+        <div class="gal-stage"><img src="assets/fop-ebit.png" alt="Tablero comparativo de FOP contra EBIT mes a mes por línea de negocio, con panel acumulado del año a la derecha."></div>
+      </div>
+      <div class="stack"><span class="tag k">Power BI</span><span class="tag">SAP</span><span class="tag">Análisis financiero</span></div>
+    </article>
+
+    <!-- PAGOS CENTRALIZADOS -->
+    <article class="project rv" data-tags="powerbi">
+      <div class="pj-top">
+        <div class="pj-meta"><span class="client">CEMEX</span><span class="sep">/</span><span>Soporte operativo</span><span class="sep">/</span><span>2025</span></div>
+        <h3>Pagos Centralizados</h3>
+        <p class="pj-sub">
+          Comportamiento de los costos centralizados de la operación —vigilancia, combustible,
+          arrendamientos, mantenimiento vehicular, peajes— por proyecto y por unidad.
+          Los tres <strong>Top 10</strong> al pie no son decorativos:
+          <strong>levantan la alerta</strong> sobre las unidades con gasto atípico y disparan
+          la conversación con el operador responsable.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Carátula del reporte</p>
+        <div class="gal-stage"><img src="assets/pagos-centralizados.png" alt="Tablero de pagos centralizados con ranking de conceptos, gasto mensual por concepto y tres rankings de las diez unidades con mayor gasto en mantenimiento, gasolina y peaje."></div>
+      </div>
+      <div class="stack"><span class="tag k">Power BI</span><span class="tag">SAP</span><span class="tag">Detección de desviaciones</span></div>
+    </article>
+
+    <!-- ===== ERA: PRACTICANTE ===== -->
+    <div class="era rv">
+      <h3>Practicante de datos</h3>
+      <span class="yr">2022 — 2023</span>
+      <span class="org">CEMEX · Mantenimiento y flota</span>
     </div>
 
+    <!-- TABLERO MP -->
+    <article class="project rv" data-tags="powerbi datos">
+      <div class="pj-top">
+        <div class="pj-meta"><span class="client">CEMEX</span><span class="sep">/</span><span>Mantenimiento nacional</span><span class="sep">/</span><span>2022</span></div>
+        <h3>Tablero MP — mantenimientos preventivos</h3>
+        <p class="pj-sub">
+          Seguimiento del cumplimiento de mantenimientos preventivos de la flota de camiones
+          revolvedores por plaza, zona y región del país, con costo total y ponderado de
+          cumplimiento por marca y módulo. Alimentado desde una base en
+          <strong>Access</strong> construida con información de SAP.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Carátula</p>
+        <div class="gal-stage"><img src="assets/tablero-mp.png" class="tall" alt="Carátula del tablero de mantenimientos preventivos con matrices de ponderado por zona y mes, costo por marca, y gráficas de tendencia anual."></div>
+      </div>
+      <div class="stack"><span class="tag k">Power BI</span><span class="tag k">Access</span><span class="tag">SAP</span><span class="tag">Gestión de flota</span></div>
+    </article>
+
+    <!-- DISPONIBILIDAD -->
+    <article class="project rv" data-tags="powerbi datos">
+      <div class="pj-top">
+        <div class="pj-meta"><span class="client">CEMEX</span><span class="sep">/</span><span>Mantenimiento nacional</span><span class="sep">/</span><span>2022</span></div>
+        <h3>Disponibilidad de equipos</h3>
+        <p class="pj-sub">
+          Estatus operativo de la flota de revolvedores clasificado en cinco conceptos, con
+          conteo por año-modelo, distribución porcentual y desglose por zona. Permite ver de un
+          vistazo <strong>cuántas unidades están realmente operando</strong> frente a las
+          detenidas por mantenimiento, correctivo o baja.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Una de las páginas</p>
+        <div class="gal-stage"><img src="assets/tablero-disponibilidad.png" alt="Página del tablero de disponibilidad con barras apiladas de unidades por año modelo y estatus, tabla jerárquica por línea de negocio y gráfica de pastel de distribución."></div>
+        <p class="cap">Versión previa a la entrega final.</p>
+      </div>
+      <div class="stack"><span class="tag k">Power BI</span><span class="tag k">Access</span><span class="tag">SAP</span></div>
+    </article>
+
+    <!-- PAPALOTE -->
+    <article class="project rv" data-tags="powerbi">
+      <div class="pj-top">
+        <div class="pj-meta">
+          <span class="client">Papalote Museo del Niño Monterrey</span>
+          <span class="badge gray">Propuesta de indicadores</span>
+        </div>
+        <h3>Desempeño operativo</h3>
+        <p class="pj-sub">
+          Me entregaron las bases de datos y carta abierta para proponer qué medir.
+          <strong>Definí los indicadores desde cero</strong>: visitantes, ingreso por visitante,
+          margen de utilidad, composición de ingresos por fuente y de costos por tipo, y ranking
+          de días con mayor ingreso. La paleta sigue la identidad del museo.
+        </p>
+      </div>
+      <div class="shots">
+        <p class="shot-label">Tablero propuesto</p>
+        <div class="gal-stage"><img src="assets/papalote.png" class="tall" alt="Tablero de desempeño operativo con seis indicadores, gráfica de ingresos contra costos y utilidad por día, desgloses de ingresos, visitantes y costos, y tabla resumen con semáforo."></div>
+      </div>
+      <div class="stack"><span class="tag k">Power BI</span><span class="tag">Definición de KPIs</span><span class="tag">Diseño visual</span></div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ OTROS ============ -->
+<section class="sec" id="otros">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-num">02 — Otros trabajos</span>
+      <h2>Automatización y <em>bases de datos</em></h2>
+      <p>Trabajo sin capturas disponibles, sobre el que respondo con gusto cualquier pregunta.</p>
+    </div>
+    <div class="olist rv">
+      <div class="oitem">
+        <span class="yr">2022 — 2023</span>
+        <div>
+          <h4>Migración de bases históricas a SQL</h4>
+          <p>
+            Consolidé información dispersa en archivos de Excel desde 2014 hasta 2022 en una base
+            SQL. La propuesta salió de un límite concreto: el volumen ya no se podía consultar en
+            Excel. Identifiqué el problema, propuse el cambio de motor y ejecuté la migración.
+          </p>
+        </div>
+      </div>
+      <div class="oitem">
+        <span class="yr">2022 — 2023</span>
+        <div>
+          <h4>Automatización de descargas de SAP con macros</h4>
+          <p>
+            Macros que ejecutan la extracción de transacciones de SAP con condiciones
+            predefinidas: el reporte que antes se armaba manualmente cada vez queda listo
+            con un botón.
+          </p>
+        </div>
+      </div>
+      <div class="oitem">
+        <span class="yr">2023</span>
+        <div>
+          <h4>Seguimiento de Órdenes de Compra</h4>
+          <p>
+            Tablero sobre el comportamiento de las órdenes de compra del área de mantenimiento,
+            a partir de las transacciones extraídas de SAP.
+          </p>
+        </div>
+      </div>
+      <div class="oitem">
+        <span class="yr">2023</span>
+        <div>
+          <h4>Balance de costos</h4>
+          <p>
+            Resumen de costos por tipo con línea de tendencia para observar el comportamiento
+            a lo largo del año.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ============ SERVICIOS ============ -->
 <section class="sec" id="servicios">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">02 — Servicios</span>
-      <h2>En qué puedo ayudarte</h2>
+    <div class="sec-head rv">
+      <span class="sec-num">03 — Servicios</span>
+      <h2>En qué puedo <em>ayudarte</em></h2>
       <p>Trabajo por proyecto, con alcance y entregables definidos desde el inicio.</p>
     </div>
-    <div class="svc">
+    <div class="svc rv">
       <div>
+        <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#22e3a0" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
         <h3>Tableros de control</h3>
-        <p>
-          Del dato crudo al tablero que tu equipo abre cada mañana. Modelado, medidas
-          y visualización pensada para responder preguntas, no para llenar espacio.
-        </p>
+        <p>Del dato crudo al tablero que tu equipo abre cada mañana. Modelado, medidas y visualización pensada para responder preguntas, no para llenar espacio.</p>
       </div>
       <div>
+        <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#22e3a0" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         <h3>Automatización de procesos</h3>
-        <p>
-          Flujos que eliminan el trabajo repetitivo: capturas, aprobaciones, avisos y
-          actualizaciones que hoy alguien hace a mano cada semana.
-        </p>
+        <p>Flujos que eliminan el trabajo repetitivo: capturas, aprobaciones, avisos y actualizaciones que hoy alguien hace a mano cada semana.</p>
       </div>
       <div>
+        <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#22e3a0" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
         <h3>Apps internas a la medida</h3>
-        <p>
-          Aplicaciones para que tu equipo capture y consulte información desde el celular,
-          conectadas al resto de tus herramientas.
-        </p>
+        <p>Aplicaciones para que tu equipo capture y consulte información desde el celular, conectadas al resto de tus herramientas.</p>
       </div>
     </div>
   </div>
@@ -429,26 +834,116 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <!-- ============ CONTACTO ============ -->
 <section class="contact" id="contacto">
   <div class="wrap">
-    <span class="sec-num">03 — Contacto</span>
-    <h2>¿Tienes un proceso que se hace a mano?</h2>
-    <p>
+    <span class="sec-num rv">04 — Contacto</span>
+    <h2 class="rv">¿Tienes un proceso que se hace <em>a mano</em>?</h2>
+    <p class="lede rv">
       Cuéntame cómo trabaja hoy tu equipo y te digo qué se puede automatizar,
       qué no conviene tocar y cuánto tomaría.
     </p>
-    <ul class="clist">
-      <li><span>Correo</span><a href="penahernandezg@gmail.com">TU_CORREO</a></li>
-      <li><span>LinkedIn</span><a href="www.linkedin.com/in/gadiel-peña-97b100223">/in/tu-perfil</a></li>
-      <li><span>WhatsApp</span><a href="8139186020">+52 …</a></li>
+    <ul class="clist rv">
+      <li><span class="k">Correo</span><a href="mailto:TU_CORREO">TU_CORREO</a></li>
+      <li><span class="k">LinkedIn</span><a href="TU_LINKEDIN" target="_blank" rel="noopener">/in/tu-perfil</a></li>
+      <li><span class="k">WhatsApp</span><a href="TU_WHATSAPP" target="_blank" rel="noopener">+52 …</a></li>
     </ul>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
     <span>© 2026 Gadiel Abraham Peña Hernández</span>
-    <span>Monterrey, México</span>
+    <span>Monterrey, Nuevo León · México</span>
   </div>
 </footer>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+  <button class="lb-x" id="lbx" aria-label="Cerrar">&#10005;</button>
+  <img id="lbimg" src="" alt="">
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- reveal on scroll ---- */
+  var rvs = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.06});
+    Array.prototype.forEach.call(rvs, function(el){ io.observe(el); });
+  } else {
+    Array.prototype.forEach.call(rvs, function(el){ el.classList.add('in'); });
+  }
+
+  /* ---- galleries ---- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-gal]'), function(gal){
+    var img = gal.querySelector('.gal-stage img');
+    var btns = gal.querySelectorAll('.gnav');
+    Array.prototype.forEach.call(btns, function(btn){
+      btn.addEventListener('click', function(){
+        Array.prototype.forEach.call(btns, function(b){ b.setAttribute('aria-pressed','false'); });
+        btn.setAttribute('aria-pressed','true');
+        img.src = btn.getAttribute('data-src');
+        img.alt = btn.getAttribute('data-alt') || '';
+        if (btn.getAttribute('data-tall') === '1') { img.classList.add('tall'); }
+        else { img.classList.remove('tall'); }
+      });
+    });
+  });
+
+  /* ---- filters ---- */
+  var chips = document.querySelectorAll('.chip');
+  var cards = document.querySelectorAll('.project');
+  var eras  = document.querySelectorAll('.era');
+  var fc    = document.getElementById('fcount');
+
+  function applyFilter(f){
+    var shown = 0;
+    Array.prototype.forEach.call(cards, function(c){
+      var tags = (c.getAttribute('data-tags') || '').split(' ');
+      var ok = (f === 'all') || tags.indexOf(f) !== -1;
+      if (ok) { c.classList.remove('hide'); shown++; }
+      else { c.classList.add('hide'); }
+    });
+    Array.prototype.forEach.call(eras, function(era){
+      var n = era.nextElementSibling, any = false;
+      while (n && n.className.indexOf('era') === -1) {
+        if (n.className.indexOf('project') !== -1 && n.className.indexOf('hide') === -1) { any = true; break; }
+        n = n.nextElementSibling;
+      }
+      era.style.display = any ? '' : 'none';
+    });
+    fc.textContent = shown + (shown === 1 ? ' proyecto' : ' proyectos');
+  }
+
+  Array.prototype.forEach.call(chips, function(chip){
+    chip.addEventListener('click', function(){
+      Array.prototype.forEach.call(chips, function(c){ c.setAttribute('aria-pressed','false'); });
+      chip.setAttribute('aria-pressed','true');
+      applyFilter(chip.getAttribute('data-f'));
+    });
+  });
+  applyFilter('all');
+
+  /* ---- lightbox ---- */
+  var lb = document.getElementById('lb');
+  var lbimg = document.getElementById('lbimg');
+  var lbx = document.getElementById('lbx');
+
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (t && t.tagName === 'IMG' && t.parentNode && t.parentNode.className.indexOf('gal-stage') !== -1) {
+      lbimg.src = t.src; lbimg.alt = t.alt; lb.classList.add('on');
+    }
+  });
+  function closeLb(){ lb.classList.remove('on'); lbimg.src = ''; }
+  lbx.addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' || e.keyCode === 27) closeLb(); });
+})();
+</script>
 </body>
 </html>

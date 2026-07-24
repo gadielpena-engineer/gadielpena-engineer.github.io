@@ -1,11 +1,13 @@
 # Archivos fuente con datos internos del cliente — NO publicar
 *.pbix
 *.msapp
-*.zip
 *.pbit
+*.zip
+*.accdb
+*.xlsx
 manifest.json
-Microsoft.Flow/
 definition.json
+Microsoft.Flow/
 
 # Sistema
 .DS_Store
